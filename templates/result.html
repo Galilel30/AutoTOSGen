@@ -188,5 +188,17 @@
     <a href="/" class="btn btn-secondary">← Back</a>
   </div>
 
+  <form id="pdfForm" method="POST" action="/download-pdf">
+    <input type="hidden" name="html" id="pdf-html">
+    <button type="submit" class="btn btn-success mt-3" onclick="preparePDF()">Download as PDF</button>
+  </form>
+
+  <script>
+  function preparePDF() {
+    const html = document.documentElement.outerHTML;
+    document.getElementById('pdf-html').value = html;
+  }
+  </script>
+
 </body>
 </html>

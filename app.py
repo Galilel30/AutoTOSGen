@@ -2,6 +2,8 @@
 
 from flask import Flask, render_template, request
 import pandas as pd
+from flask import make_response
+from weasyprint import HTML
 
 app = Flask(__name__)
 
@@ -25,7 +27,20 @@ def generate_tos():
     noted_by = request.form.get('noted_by')
     noted_by_designation = request.form.get('noted_by_designation')
     total_items = int(request.form.get('total_items'))
-   
+
+@app.route('/download-pdf', methods=['POST'])
+def download_pdf():
+    from jinja2 import Template
+
+    rendered_html = request.form.get('html')
+
+    pdf = HTML(string=rendered_html).write_pdf()
+
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=table_of_specifications.pdf'
+    return response
+
     # === Get topic data ===
     topics = request.form.getlist('topic[]')
     hours = [float(h) for h in request.form.getlist('hours[]')]
