@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bicol University Tabaco - Fisheries Department</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      padding: 1.5rem;
+      background-color: #fff;
+      color: #000;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 1.0rem;
+      border-bottom: 2px solid #000;
+      padding-bottom: 0.5rem;
+      page-break-inside: avoid;
+    }
+
+    .header p,
+    .header h4 {
+      margin: 0;
+      line-height: 1.0;
+    }
+
+    .header-group {
+      margin-bottom: 0.5rem;
+    }
+
+    .details-section {
+      margin-top: 0.2rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.95rem;
+      page-break-inside: avoid;
+    }
+
+    .details-section p {
+      margin-bottom: 0.05rem;
+      line-height: 1.15;
+    }
+
+    .tos-table {
+      page-break-inside: avoid;
+    }
+
+    .tos-table th, .tos-table td {
+      text-align: center;
+      vertical-align: middle;
+      font-size: 0.85rem;
+      line-height: 1.2;
+      padding: 0.35rem;
+    }
+
+    .tos-table th {
+      background-color: #c8cacd;
+      color: #0e0505;
+    }
+
+    .signatures {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      page-break-inside: avoid;
+    }
+
+    .signatures div {
+      text-align: center;
+      width: 45%;
+    }
+
+    .signatures p {
+      margin-bottom: 3rem;
+      line-height: 1.2;
+    }
+
+    .back-btn {
+      margin-top: 2rem;
+    }
+
+    @media print {
+      .back-btn {
+        display: none;
+      }
+      body {
+        padding: 0.5in;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <!-- Header with Dual Logos -->
+  <div class="header">
+    <div class="row align-items-center mb-2">
+      <!-- Left logo -->
+      <div class="col-2 text-start">
+        <img src="{{ url_for('static', filename='bu-logo.png') }}" alt="BU Logo" style="max-height: 130px;">
+      </div>
+
+      <!-- Center text -->
+      <div class="col-8 text-center">
+        <p class="mb-0">Republic of the Philippines</p>
+        <p class="fw-bold mb-0">BICOL UNIVERSITY TABACO CAMPUS</p>
+        <p class="mb-0">FISHERIES DEPARTMENT</p>
+        <p class="mb-0">Tayhi, Tabaco City</p>
+        <p class="mt-1 mb-0">{{ semester }}</p>
+        <h4 class="my-1 fw-bold">TABLE OF SPECIFICATIONS</h4>
+        <p class="mb-0">{{ exam_title }}</p>
+      </div>
+
+      <!-- Right logo -->
+      <div class="col-2 text-end">
+        <img src="{{ url_for('static', filename='bu-tabaco-logo.jpg') }}" alt="BU Tabaco Logo" style="max-height: 100px;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Info -->
+  <div class="details-section row">
+    <div class="col-md-6">
+      <p>Course Code: <strong>{{ course_code }}</strong></p>
+      <p>Descriptive Title: <strong>{{ course_title }}</strong></p>
+      <p>Course & Year: <strong>{{ course_year }}</strong></p>
+    </div>
+    <div class="col-md-6">
+      <div style="float: right; text-align: left; width: 60%;">
+        <p>Units: <strong>{{ units }}</strong></p>
+        <p>Time: <strong>{{ time }}</strong></p>
+        <p>Days: <strong>{{ days }}</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOS Table -->
+  <table class="table table-bordered table-sm tos-table">
+    <thead>
+      <tr>
+        <th>Topic</th>
+        <th>Recitation Hours</th>
+        <th>No. of Items</th>
+        {% for domain in selected_domains %}
+          <th>{{ domain }} ({{ (domain_weights[domain] * 100)|int }}%)</th>
+        {% endfor %}
+        <th>% of Items</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in df %}
+      <tr>
+        <td>{{ row["Topic"] }}</td>
+        <td>{{ row["Hours"]|int }}</td>
+        <td>{{ row["Items"]|int }}</td>
+        {% for domain in selected_domains %}
+        <td>{{ row[domain]|int }}</td>
+        {% endfor %}
+        <td>{{ row["% of Items"]|int }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Signature Section -->
+  <div class="signatures">
+    <!-- Prepared by -->
+    <div class="text-start">
+      <p>Prepared by:</p>
+      <p class="fw-semibold mb-0">{{ instructor }}</p>
+      <p>{{ instructor_designation }}</p>
+    </div>
+
+    <!-- Noted by -->
+    {% if noted_by %}
+    <div style="float:right; text-align: left; width: 30%;">
+      <p>Noted by:</p>
+      <p class="fw-semibold mb-0">{{ noted_by }}</p>
+      <p>{{ noted_by_designation }}</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Back Button -->
+  <div class="back-btn text-end">
+    <a href="/" class="btn btn-secondary">← Back</a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TOS Generator – Dark Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #023542;
+      color: #ebdbdb;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+    }
+
+    .card {
+      background-color: #255059;
+      border: 2px solid #0ae68a;
+    }
+
+    .step-card h5 {
+      color: #90f9c1;
+    }
+
+    .form-control,
+    .form-select {
+      background-color: #f3f7f8;
+      color: #171616;
+      border: 1px solid #444;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      background-color: #817a7a;
+      color: #fff;
+      border-color: #68b1ed;
+      box-shadow: none;
+    }
+
+    .form-label {
+      color: #0fa35e;
+    }
+
+    .form-check-label {
+      color: #0ce692;
+    }
+
+    .btn-primary {
+      background-color: #048f1e;
+      border-color: #013016;
+    }
+
+    .btn-primary:hover {
+      background-color: #1565c0;
+    }
+
+    .btn-outline-secondary {
+      color: #04960e;
+      border-color: #e3d2d2;
+    }
+
+    .btn-outline-secondary:hover {
+      background-color: #0ae68a;
+      color: #fff;
+    }
+
+    #domain-total {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="text-center mb-4">Table of Specifications Generator</h2>
+  <form action="/generate" method="POST">
+
+    <!-- Step 1: Course Information -->
+    <div class="card step-card p-3 mb-4">
+      <h5>Step 1: Course Information</h5>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Course Code</label>
+          <input type="text" name="course_code" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Descriptive Title</label>
+          <input type="text" name="course_title" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Course & Year</label>
+          <input type="text" name="course_year" class="form-control" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Exam Details -->
+    <div class="card step-card p-3 mb-4">
+      <h5>Step 2: Exam Details</h5>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Units</label>
+          <input type="text" name="units" class="form-control">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Time</label>
+          <input type="text" name="time" class="form-control">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Days</label>
+          <input type="text" name="days" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Semester</label>
+          <input type="text" name="semester" class="form-control" value="1st Semester 2022-2023">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Exam Title</label>
+          <input type="text" name="exam_title" class="form-control" value="FINAL TERM EXAMINATION">
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Test & Signatory -->
+    <div class="card step-card p-3 mb-4">
+      <h5>Step 3: Test and Signatory Information</h5>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Total Test Items</label>
+          <input type="number" name="total_items" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Prepared by</label>
+          <input type="text" name="instructor" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Noted by</label>
+          <input type="text" name="noted_by" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Instructor Designation</label>
+          <select name="instructor_designation" class="form-select" required>
+            <option value="">-- Select Designation --</option>
+            <option>Instructor I</option>
+            <option>Instructor II</option>
+            <option>Assistant Professor I</option>
+            <option>Assistant Professor II</option>
+            <option>Associate Professor I</option>
+            <option>Associate Professor II</option>
+            <option>Professor I</option>
+            <option>Professor II</option>
+            <option>Professor III</option>
+            <option>Professor IV</option>
+            <option>Professor V</option>
+            <option>Professor VI</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Noted by Designation</label>
+          <select name="noted_by_designation" class="form-select">
+            <option value="">-- Select Designation --</option>
+            <option>Program Chair</option>
+            <option>Department Head</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Topics -->
+    <div class="card step-card p-3 mb-4">
+      <h5>Step 4: Add Topics</h5>
+      <div id="topics">
+        <div class="row topic-entry mb-2">
+          <div class="col-md-6">
+            <input type="text" name="topic[]" class="form-control" placeholder="Topic name" required>
+          </div>
+          <div class="col-md-6">
+            <input type="number" name="hours[]" class="form-control" placeholder="Recitation hours" required>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline-secondary mt-2" onclick="addTopic()">+ Add Topic</button>
+    </div>
+
+    <!-- Step 5: Cognitive Domains -->
+    <div class="card step-card p-3 mb-4">
+      <h5>Step 5: Select 3 Cognitive Domains</h5>
+      <p class="text-muted mb-2">Choose 3 domains and make sure total weight = 100%</p>
+      <div class="row g-3 domain-row">
+        {% set domains = ["Remembering", "Understanding", "Applying", "Analyzing", "Evaluating", "Creating"] %}
+        {% for domain in domains %}
+        <div class="col-md-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="check-{{ domain }}" onchange="toggleInput('{{ domain }}')">
+            <label class="form-check-label" for="check-{{ domain }}">{{ domain }}</label>
+          </div>
+          <input type="number" name="percent_{{ domain }}" class="form-control mt-1" placeholder="% Weight" id="input-{{ domain }}" disabled>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="text-end mt-2">
+        <span id="domain-total">Total: 0%</span>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-end mt-4">
+      <button type="submit" class="btn btn-primary btn-lg">🚀 Generate TOS</button>
+    </div>
+
+  </form>
+</div>
+
+<script>
+  function addTopic() {
+    const container = document.getElementById('topics');
+    const div = document.createElement('div');
+    div.className = 'row topic-entry mb-2';
+    div.innerHTML = `
+      <div class="col-md-6">
+        <input type="text" name="topic[]" class="form-control" placeholder="Topic name" required>
+      </div>
+      <div class="col-md-6">
+        <input type="number" name="hours[]" class="form-control" placeholder="Recitation hours" required>
+      </div>
+    `;
+    container.appendChild(div);
+  }
+
+  function toggleInput(domain) {
+    const checkbox = document.getElementById(`check-${domain}`);
+    const input = document.getElementById(`input-${domain}`);
+    input.disabled = !checkbox.checked;
+    if (!checkbox.checked) input.value = '';
+    updateDomainTotal();
+  }
+
+  function updateDomainTotal() {
+    let total = 0;
+    const inputs = document.querySelectorAll('[id^=input-]');
+    inputs.forEach(input => {
+      if (!input.disabled && input.value) {
+        total += parseFloat(input.value);
+      }
+    });
+    const totalDisplay = document.getElementById('domain-total');
+    totalDisplay.innerText = `Total: ${total}%`;
+    totalDisplay.style.color = (total === 100 ? '#66bb6a' : '#ef5350');
+  }
+
+  document.querySelectorAll('[id^=input-]').forEach(input => {
+    input.addEventListener('input', updateDomainTotal);
+  });
+</script>
+
+</body>
+</html>
